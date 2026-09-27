@@ -1,0 +1,6 @@
+{
+  "name": "BatchSync - Academic Operating System",
+  "description": "Unified university academic operating system connecting administration, deans, teachers, CRs, and students for timetable orchestration, dynamic routine sync, and peer collaboration.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,14 @@
+{
+  "name": "batchsync",
+  "version": "1.0.0",
+  "description": "BatchSync - University Academic Coordination & Management Operating System",
+  "scripts": {
+    "start": "start-all.cmd",
+    "stop": "stop-all.cmd",
+    "dev:backend": "start-backend.cmd",
+    "dev:frontend": "start-frontend.cmd"
+  },
+  "keywords": ["batchsync", "academic", "react", "express", "mysql"],
+  "author": "",
+  "license": "ISC"
+}
