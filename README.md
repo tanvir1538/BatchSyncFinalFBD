@@ -1,102 +1,98 @@
 # BatchSync — University Academic Coordination & Management System
 
-BatchSync is a centralized role-based university academic coordination and management platform connecting university administration, faculties, departments, batches, teachers, CRs, and students.
+**BatchSync** is a unified, real-time university academic operating system connecting university administration, faculties, departments, batches, teachers, CRs, and students.
+
+---
+
+## 🛠️ Technology Stack
 
 The active implementation uses:
 
-- Frontend: Vite + React 19
-- Backend: C# / ASP.NET Core Web API (.NET 10)
-- Database: Microsoft SQL Server through Entity Framework Core
-- Authentication: ASP.NET Core Identity + JWT bearer tokens
+- **Frontend**: React 19 + Vite 6 + Tailwind CSS (Pure JavaScript & JSX)
+- **Backend**: Node.js + Express.js REST API (`backend/src/server.js`)
+- **Database**: MySQL Database (`batchsync_db` on port `3306` with connection pooling)
+- **Architecture**: Modular MVC REST Architecture with centralized error handling & CORS
 
-The runnable application is contained in `frontend/` and `backend/`.
+---
 
-## Included workflows
+## 🚀 Key Features & Included Workflows
 
-- Student and Dean signup, role-based sign-in, profile completion and photo upload
-- Main Admin-approved Dean workspace and Dean-created CR/Teacher accounts
-- Faculty-isolated batches and protected student directories
-- Student membership requests and CR approval
-- Immutable fixed weekly routine plus date-specific routine updates/cancellation
-- Automatic Teacher batch/subject assignment when a CR creates a routine
-- Dedicated Teacher subject page with slide and assignment publishing, attendance register and percentages
-- Student profile with separate attendance and assignment views, file submission/resubmission, and teacher-side submission access
-- Date archive, class notes, class completion tracking and teacher totals
-- Faculty/batch notices and reminders
-- Timed polls with one vote per approved student and controlled result visibility
-- CR fund collections with paid/pending student ledgers
-- Responsive desktop and mobile UI based on the original BatchSync design
+1. **Public Faculty Catalog & Landing Portal**:
+   - University overview, active collegiate faculties, statistics, and quick navigation.
 
-## Requirements
+2. **Faculty Management & Provisioning (Admin Portal)**:
+   - Dynamic schema dependency binding: provision new faculties and departments with immediate downstream auto-propagation across all portals without redeployment.
 
-- Node.js 20 or newer
-- .NET 10 SDK (a project-local SDK is already available in `.dotnet/` in this workspace)
-- SQL Server LocalDB or SQL Server Express
+3. **Deanery Portal (Scoped Access)**:
+   - Faculty-isolated academic boards, departmental breakdown, master timetable, and Dean clearance workflows.
 
-The development connection in `backend/appsettings.json` uses `(localdb)\\MSSQLLocalDB`. To use SQL Server Express instead, set an environment variable before starting the API:
+4. **Teacher Central (Class & Attendance Hub)**:
+   - Live routine schedule, QR/biometric attendance counter, room swap requests, assignment creation, and course resource vault.
 
-```powershell
-$env:ConnectionStrings__DefaultConnection = "Server=localhost\\SQLEXPRESS;Database=BatchX;Trusted_Connection=True;Encrypt=False;TrustServerCertificate=True;MultipleActiveResultSets=true"
-```
+5. **CR Coordination Hub (Batch Operations)**:
+   - Batch routine overrides, Telegram bot sync, active democratic voting ballots/polls, member verification queue, and batch treasury accounting.
 
-## Run locally
+6. **Student Notes & Academic Vault**:
+   - Peer-reviewed **Topper's Class Notes Vault** with direct PDF download and private personal note draft repository.
 
-The `.cmd` launchers work even when PowerShell script execution is disabled.
-The easiest option starts both servers in separate minimized windows:
+---
 
-```bat
+## 💻 How to Run Locally
+
+### 1. Prerequisites
+- **Node.js** (v18 or newer)
+- **MySQL Server** (via XAMPP, WAMP, or standalone MySQL on port `3306`)
+
+### 2. Database Setup
+Create database and import initial data in MySQL:
+- Schema: [`database/schema.sql`](database/schema.sql)
+- Seed Data: [`database/seed.sql`](database/seed.sql)
+
+### 3. One-Click Startup
+Run the unified startup launcher from the root folder:
+```cmd
 start-all.cmd
 ```
+*(Or via PowerShell: `.\start-all.cmd` or `npm start`)*
 
-To run them in separate terminals instead:
+This will automatically:
+- Launch Express Backend on **http://127.0.0.1:5080**
+- Launch Vite React Frontend on **http://localhost:5173**
+- Automatically open the application in your web browser.
 
-```bat
-start-backend.cmd
-start-frontend.cmd
+### 4. Stop Services
+To stop both backend and frontend servers:
+```cmd
+stop-all.cmd
 ```
 
-Launchers are safe to run more than once; they detect an already-running
-server instead of rebuilding it. Stop both servers with `stop-all.cmd`.
+---
 
-The scripts start:
+## 📂 Project Structure
 
-- React: http://127.0.0.1:5173
-- API: http://127.0.0.1:5080
-- API health: http://127.0.0.1:5080/api/health
-
-On first API start, EF Core creates the SQL Server schema and inserts idempotent demo data.
-
-## Demo accounts
-
-Every demo password is `demo1234`.
-
-| Role | Username |
-|---|---|
-| Main Admin | `admin` |
-| FSE Dean | `dean` |
-| FBS Dean | `deanbiz` |
-| CSE 48 CR | `cr` |
-| CSE 52 CR | `newcr` |
-| BBA 21 CR | `crbiz` |
-| FSE Teacher | `teacher` |
-| CSE 48 Student | `student` |
-| CSE 48 Student | `sadia` |
-| CSE 52 Student | `student52` |
-| BBA 21 Student | `bizstudent` |
-| Pending CSE 48 Student | `pendingstudent` |
-
-## Build
-
-```powershell
-$env:DOTNET_CLI_HOME = "$PWD\\.dotnet-cli-home"
-.\\.dotnet\\dotnet.exe build BatchX.slnx
-npm.cmd install --prefix frontend
-npm.cmd run build --prefix frontend
+```text
+BatchX/
+├── frontend/             # React 19 + Vite + Tailwind CSS (Pure JSX)
+│   ├── src/
+│   │   ├── components/   # Navbar.jsx, Sidebar.jsx
+│   │   ├── views/        # Admin, Dean, Teacher, CR, Student, Landing
+│   │   ├── services/     # api.js (REST API Client)
+│   │   └── App.jsx       # Root Component
+│   └── vite.config.js
+│
+├── backend/              # Node.js + Express.js API
+│   ├── src/
+│   │   ├── config/       # db.js (MySQL Pool), initDb.js
+│   │   ├── controllers/  # CRUD Business Logic
+│   │   ├── routes/       # Express Route Handlers (/api/v1/...)
+│   │   ├── app.js
+│   │   └── server.js     # Entry point (Port 5080)
+│   └── package.json
+│
+├── database/             # Database DDL & Seed Data
+│   ├── schema.sql
+│   └── seed.sql
+│
+├── start-all.cmd         # One-click start script
+└── stop-all.cmd          # One-click stop script
 ```
-
-## Configuration
-
-- Change `Jwt:Key` in `backend/appsettings.json` before production.
-- Set the production SQL Server connection through `ConnectionStrings__DefaultConnection`.
-- Uploaded files are stored under `backend/wwwroot/uploads` for local development; use durable object storage in production.
-- CORS currently permits the Vite development origins on ports 5173.

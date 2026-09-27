@@ -10,7 +10,7 @@ BatchSync is a centralized role-based university academic coordination and manag
 
 Universities commonly manage these activities through disconnected social media groups, spreadsheets, paper records, and informal messages. This makes information difficult to verify, easy to lose, and slow to update. BatchSync addresses this problem by providing a single role-based source of information for each faculty and batch. It gives authorized users the tools they need while protecting faculty and batch data from unrelated users.
 
-The current project is implemented as a responsive React application connected to an ASP.NET Core Web API and Microsoft SQL Server. Authentication is handled through ASP.NET Core Identity and JSON Web Tokens (JWT). The result is a practical academic coordination platform that improves communication, transparency, record keeping, and day-to-day batch administration.
+The current project is implemented as a responsive React (JavaScript / JSX) application connected to a Node.js + Express.js REST API and MySQL database. Authentication is handled through secure hashed credentials and JSON Web Tokens (JWT). The result is a practical academic coordination platform that improves communication, transparency, record keeping, and day-to-day batch administration.
 
 ## 3. Problem Statement
 
@@ -114,16 +114,15 @@ flowchart LR
     end
 
     subgraph Server["Application Layer"]
-        WEBAPI[ASP.NET Core 10 Web API]
-        AUTH[Identity and JWT Authentication]
+        WEBAPI[Node.js + Express.js REST API]
+        AUTH[JWT Authentication & Middleware]
         RBAC[Role and Faculty Authorization]
         SERVICES[Academic and Batch Operations]
-        FILES[Local File Upload Service]
+        FILES[Static File Upload Service]
     end
 
     subgraph Data["Data Layer"]
-        EF[Entity Framework Core]
-        SQL[(Microsoft SQL Server)]
+        MYSQL[(MySQL Database / mysql2)]
         STORAGE[(Uploaded Files)]
     end
 
@@ -133,11 +132,11 @@ flowchart LR
     T --> UI
     S --> UI
     UI --> ROUTER --> API_CLIENT
-    API_CLIENT -->|HTTPS and JSON| WEBAPI
+    API_CLIENT -->|HTTP/REST and JSON| WEBAPI
     WEBAPI --> AUTH
     WEBAPI --> RBAC
     WEBAPI --> SERVICES
-    SERVICES --> EF --> SQL
+    SERVICES --> MYSQL
     WEBAPI --> FILES --> STORAGE
 ```
 
@@ -209,14 +208,14 @@ erDiagram
 
 | Layer | Technology |
 |---|---|
-| Frontend | React 19, Vite 7, React Router |
-| Backend | C#, ASP.NET Core Web API, .NET 10 |
-| Database | Microsoft SQL Server |
-| Data Access | Entity Framework Core |
-| Authentication | ASP.NET Core Identity and JWT Bearer Tokens |
-| File Handling | ASP.NET Core static files and local upload directory |
-| API Format | REST-style HTTP endpoints with JSON |
-| Development Tools | Node.js, npm, .NET SDK, SQL Server LocalDB or Express |
+| Frontend | React 19, Vite, React Router (Pure JavaScript / JSX) |
+| Backend | Node.js, Express.js REST API |
+| Database | MySQL (Database: `batchsync_db`) |
+| Data Access | `mysql2/promise` Connection Pool |
+| Authentication | Password Hashing (bcryptjs/crypto) and JWT Bearer Tokens |
+| File Handling | Express Static middleware and local upload directory |
+| API Format | RESTful HTTP endpoints with JSON |
+| Development Tools | Node.js, npm, XAMPP/MySQL Server, VS Code |
 
 ## 12. Non-Functional Requirements
 
